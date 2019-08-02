@@ -39,9 +39,12 @@ $(document).ready(function() {
     // Scrape new articles, and alert user if no new ones are found
     $(".scrape-new").on("click", function() {
     
+        $(this).html('<span class="btn-primary spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...').addClass('disabled');
+
         $.get("/scrape").then(function(data) {
             console.log(data);
             displayArticles();
+            $("#scraper").html('<a class="btn-primary scrape-new">peel the onion!</a>').removeClass('disabled');
         });
 
     });
