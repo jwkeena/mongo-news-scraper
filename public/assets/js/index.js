@@ -12,15 +12,15 @@ function displayArticles() {
                 const cardHeaderDiv = $("<div>").addClass("card-header");
                 parentDiv.append(cardHeaderDiv);
                 
-                const h3 = $("<h3>");
-                cardHeaderDiv.append(h3);
+                const h4 = $("<h4>");
+                cardHeaderDiv.append(h4);
         
                 const a = $("<a>").addClass("article-link").attr("target", "_blank");
                 a.attr("href", article.link).attr("data-id", article._id).text(article.title);
-                h3.append(a);
+                h4.append(a);
         
-                const button = $("<a>").addClass("btn btn-success save").text("Save Article");
-                h3.append(button);
+                const button = $("<button>").addClass("btn btn-success save").text("SAVE");
+                h4.append(button);
         
                 $("#article-well").append(parentDiv);
                 
@@ -32,19 +32,19 @@ function displayArticles() {
 };
 
 $(document).ready(function() {
-    
+
     // On each page load, retrieve all articles in database
     displayArticles();
 
     // Scrape new articles, and alert user if no new ones are found
-    $(".scrape-new").on("click", function() {
+    $("#scraper").on("click", function() {
     
-        $(this).html('<span class="btn-primary spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...').addClass('disabled');
+        $("#scraper").html('<button class="btn btn-primary" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>getting new articles...</button>');
 
         $.get("/scrape").then(function(data) {
             console.log(data);
             displayArticles();
-            $("#scraper").html('<a class="btn-primary scrape-new">peel the onion!</a>').removeClass('disabled');
+            $("#scraper").html('<button class="btn btn-primary">peel the onion!</button>').removeClass('disabled');
         });
 
     });

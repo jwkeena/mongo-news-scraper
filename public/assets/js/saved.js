@@ -1,30 +1,47 @@
 function displaySavedArticles() {
     $.get("/articles").then(function (articles) {
         $("#article-well").empty();
+
+        let articlesRendered = 0;
         articles.forEach(article => {
-    
+
             // Only render article if it HAS been saved in favorites
             if (article.isSaved) {
+
+                articlesRendered = articlesRendered + 1;
                 const parentDiv = $("<div>").addClass("card");
-    
+
                 const cardHeaderDiv = $("<div>").addClass("card-header");
                 parentDiv.append(cardHeaderDiv);
-    
-                const h3 = $("<h3>");
-                cardHeaderDiv.append(h3);
-    
+
+                const h4 = $("<h4>");
+                cardHeaderDiv.append(h4);
+
                 const a = $("<a>").addClass("article-link").attr("target", "_blank");
                 a.attr("href", article.link).attr("data-id", article._id).text(article.title);
-                h3.append(a);
-    
-                const button = $("<a>").addClass("btn btn-danger delete").text("Delete Article");
-                h3.append(button);
-    
+                h4.append(a);
+
+                const button = $("<button>").addClass("btn btn-danger delete").text("DELETE");
+                h4.append(button);
+
                 $("#article-well").append(parentDiv);
-    
+
                 console.log(article);
             };
         });
+
+        if (articlesRendered === 0) {
+            const parentDiv = $("<div>")
+
+            const h3 = $("<h3>").css("text-align", "center");
+            parentDiv.append(h3);
+
+            const a = $("<a>").attr("href", "index.html").text("No articles saved! Return to home?");
+            h3.append(a);
+
+            $("#article-well").append(parentDiv);
+
+        }
     });
 };
 

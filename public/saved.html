@@ -5,7 +5,7 @@
   <title>Mongo Scraper</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Cormorant+SC" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -24,30 +24,29 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/saved">SAVED ARTICLES</a>
+        <li class="nav-item">
+          <a class="nav-link active" href="/saved">SAVED ARTICLES</a>
         </li>
       </ul>
     </div>
+    
   </nav>
 
   <div class="jumbotron text-center">
-    <div class="overlay">
+      <div class="overlay">
+      </div>
+      <div class="background-image">
+      </div>
+      <div class="caption">
+        <h1>Saved Articles</h1>
+      </div>
     </div>
-    <div class="background-image">
-    </div>
-    <div class="caption">
-      <h1>SAVED ARTICLES</h1>
-      <!-- <a class="btn btn-primary scrape-new">peel the onion!</a> -->
-    </div>
-  </div>
-  <div id="article-well" class="container-fluid article-container">
-
-  </div>
+  
+  <div id="article-well" class="container-fluid article-container"></div>
 
   <footer class="footer">
     <div class="container" >
-    <p  style="background-color: rgb(134,54,86)" ><img src="https://jwkeena.github.io/images/logo-mongodb.png" class="logo"> &nbsp; + <img src="http://www.userlogos.org/files/the-onion-logo.png" class="logo"> +  &nbsp; &nbsp;  <img src="https://jwkeena.github.io/images/logo-bootstrap.png" class="logo"></p>
+    <p style="background-color: rgb(134,54,86)" ><img src="http://www.userlogos.org/files/the-onion-logo.png" class="logo"> peeler - a real fake news scraper!</p>
     </div>
   </footer>
 
