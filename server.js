@@ -36,7 +36,6 @@ mongoose.connect("mongodb://localhost/onion", {
 // A GET route for the main site
 app.get("/", function (req, res) {
     res.json("index.html");
-       
 });
 
 // A GET route for scraping the onion website
