@@ -35,7 +35,8 @@ mongoose.connect("mongodb://localhost/onion", {
 
 // A GET route for the main site
 app.get("/", function (req, res) {
-    res.json("index.html")
+    res.json("index.html");
+       
 });
 
 // A GET route for scraping the onion website
@@ -45,11 +46,12 @@ app.get("/scrape", function (req, res) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         const $ = cheerio.load(response.data);
 
-        const uniqueLinks = []
+        const uniqueLinks = [];
+        let addedToDatabase = 0;
         // Now, we grab every h2 within an article tag, and do the following:
         $(".content-meta__headline__wrapper").find("a").each(function (i, element) {
             // Save an empty result object
-            
+
             const result = {};
             const title = $(element).attr("title");
             const link = $(element).attr("href");
@@ -66,46 +68,41 @@ app.get("/scrape", function (req, res) {
                 };
             };
 
-            console.log(result);
-
-            // Add the text and href of every link, and save them as properties of the result object
-            //   result.title = $(this)
-            //     .children("a")
-            //     .text();
-            //   result.link = $(this)
-            //     .children("a")
-            //     .attr("href");
-
-            //   // Create a new Article using the `result` object built from scraping
-            //   db.Article.create(result)
-            //     .then(function(dbArticle) {
-            //       // View the added result in the console
-            //       console.log(dbArticle);
-            //     })
-            //     .catch(function(err) {
-            //       // If an error occurred, log it
-            //       console.log(err);
-            //     });
+            // Create a new Article using the `result` object built from scraping
+            db.Article.create(result)
+                .then(function (dbArticle) {
+                    addedToDatabase++;
+                    // View the added result in the console
+                    console.log(dbArticle);
+                })
+                .catch(function (err) {
+                    addedToDatabase--;
+                    // If an error occurred, log it
+                    console.log(err);
+                });
         });
 
         // Send a message to the client
-        res.send("Scrape Complete");
+        if (addedToDatabase > 0) {
+            res.send("Scrape complete: ", addedToDatabase, " new articles added");
+        } else {
+            res.send("Scrape complete: no new articles added.");
+        };
     });
 });
 
-// Route for getting all Articles from the db
 app.get("/articles", function (req, res) {
-    // Grab every document in the Articles collection
-    db.Article.find({})
-        .then(function (dbArticle) {
-            // If we were able to successfully find Articles, send them back to the client
-            res.json(dbArticle);
-        })
-        .catch(function (err) {
-            // If an error occurred, send it to the client
-            res.json(err);
-        });
-});
+     // Grab every document in the Articles collection
+     db.Article.find({})
+     .then(function (dbArticles) {
+         // If we were able to successfully find Articles, send them back to the client
+         res.json(dbArticles);
+     })
+     .catch(function (err) {
+         // If an error occurred, send it to the client
+         res.json(err);
+     });
+})
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function (req, res) {

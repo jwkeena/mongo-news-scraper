@@ -13,6 +13,7 @@ var ArticleSchema = new Schema({
   },
   // `link` is required and of type String
   link: {
+    unique: true,
     type: String,
     required: true
   },
