@@ -1,5 +1,5 @@
 function displayArticles() {
-    
+    $("#article-well").html('<div id="spinner" class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>');
     $.get("/articles").then(function(articles) {
         $("#article-well").empty();
 
