@@ -11,6 +11,7 @@ function displaySavedArticles() {
             if (article.isSaved) {
 
                 articlesRendered = articlesRendered + 1;
+                
                 const parentDiv = $("<div>").addClass("card");
 
                 const cardHeaderDiv = $("<div>").addClass("card-header");
@@ -45,8 +46,17 @@ function displaySavedArticles() {
             h3.append(a);
 
             $("#article-well").append(parentDiv);
+        };
+    });
+};
 
-        }
+function displayNotes(articleID) {
+    $.get("/articles/" + articleID).then(function (data) {
+        // Without the if clause, newly saved articles throw an undefined error
+        if (data.note) {
+            console.log(data.note.noteText);
+            $("#retrieved-note").text(data.note.noteText);
+        };
     });
 };
 
@@ -65,41 +75,52 @@ $(document).ready(function () {
         });
     });
 
-    $(document.body).on("click", ".view-note", function() {
+    // Event delegation to open notes modal
+    $(document.body).on("click", ".view-note", function () {
         const id = $(this).prev().prev().attr("data-id");
-        $.get("/articles/" + id).then(function(data) {
+
+        $.get("/articles/" + id).then(function (data) {
+            console.log(data);
+            let noteText;
+            if (data.note) {
+                noteText = data.note.noteText;
+            } else {
+                noteText = "";
+            }
             // Constructing our initial HTML to add to the notes modal
             const modalText = $("<div class='container-fluid text-center'>").append(
-              $("<h4>").text("Notes For Article: " + id).attr("article-id", id).addClass("modalID"),
-              $("<hr>"),
-              $("<ul class='list-group note-container'>"),
-              $("<textarea placeholder='New Note' rows='4' cols='60'>"),
-              $("<button class='btn btn-success save'>Save Note</button>")
+                $("<h4>").text("Notes For Article: " + id).attr("article-id", id).addClass("modalID"),
+                $("<hr>"),
+                $("<p id='retrieved-note'>").text(noteText),
+                $("<hr>"),
+                $("<ul class='list-group note-container'>"),
+                $("<textarea id='new-note' placeholder='New Note' rows='4' cols='60'>"),
+                $("<button class='btn btn-success save'>Save Note</button>")
             );
+          
             // Adding the formatted HTML to the note modal
             bootbox.dialog({
-              message: modalText,
-              closeButton: true
+                message: modalText,
+                closeButton: true
             });
-        
-        // const id = $(this).prev().prev().attr("data-id");
-        // console.log(id);
-        // $.ajax("/articles/" + id, {
-        //     type: "PUT",
-        //     data: {
-        //         note: "test"
-        //     }
-        // }).then(function () {
-        //     displaySavedArticles();
-        // });
         });
     });
 
-    $(document.body).on("click", ".save", function() {
+    // Event delegation to post new notes
+    $(document.body).on("click", ".save", function () {
 
         const articleID = $(".modalID").attr("article-id");
-        console.log(articleID);
-
+        const noteText = $("#new-note").val();
+        $.ajax("/articles/" + articleID, {
+            type: "POST",
+            data: {
+                noteText: noteText
+            }
+        }).then(function (data) {
+            console.log(data._id);
+            if (data.note) {
+                displayNotes(data._id)
+            };
+        });
     });
-
 });

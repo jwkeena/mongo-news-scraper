@@ -120,6 +120,8 @@ app.get("/articles/:id", function (req, res) {
         .populate("note")
         .then(function (dbArticle) {
             // If we were able to successfully find an Article with the given id, send it back to the client
+            console.log("sending back specific article")
+            console.log("note object", dbArticle.note)
             res.json(dbArticle);
         })
         .catch(function (err) {
@@ -131,7 +133,8 @@ app.get("/articles/:id", function (req, res) {
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function (req, res) {
     // Create a new note and pass the req.body to the entry
-    console.log("creating new note for ", req.params.id )
+    console.log("creating new note for ", req.params.id)
+    console.log(req.body.note);
     db.Note.create(req.body)
         .then(function (dbNote) {
             // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
@@ -151,6 +154,7 @@ app.post("/articles/:id", function (req, res) {
         })
         .catch(function (err) {
             // If an error occurred, send it to the client
+            console.log(err);
             res.json(err);
         });
 });

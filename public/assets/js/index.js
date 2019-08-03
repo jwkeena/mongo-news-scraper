@@ -1,12 +1,19 @@
 function displayArticles() {
+    
+    // Spinner
     $("#article-well").html('<div id="spinner" class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>');
-    $.get("/articles").then(function(articles) {
-        $("#article-well").empty();
 
+    $.get("/articles").then(function(articles) {
+       
+        $("#article-well").empty();
+        let articlesRendered = 0;
         articles.forEach(article => {
             
             // Only render article if it hasn't been saved in favorites
             if (!article.isSaved) {
+
+                articlesRendered = articlesRendered + 1;
+
                 const parentDiv = $("<div>").addClass("card");
         
                 const cardHeaderDiv = $("<div>").addClass("card-header");
@@ -27,6 +34,18 @@ function displayArticles() {
                 console.log(article);
             }
         });
+
+        if (articlesRendered === 0) {
+            const parentDiv = $("<div>")
+
+            const h3 = $("<h3>").css("text-align", "center");
+            parentDiv.append(h3);
+
+            const p = $("<p>").text("Scrape complete: no new articles.").css("color", "#2196f3");
+            h3.append(p);
+
+            $("#article-well").append(parentDiv);
+        };
 
       });
 };
