@@ -3,7 +3,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const path = require("path");
 
-// Scraoubg tools
+// Scraping tools
 const axios = require("axios");
 const cheerio = require("cheerio");
 
@@ -27,8 +27,10 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/onion";
+
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/onion", {
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true
 });
 
