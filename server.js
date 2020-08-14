@@ -27,10 +27,10 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/onion";
+const DB_URI = process.env.DB_URI || "mongodb://localhost/onion";
 
 // Connect to the Mongo DB
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(DB_URI, {
     useNewUrlParser: true
 });
 
